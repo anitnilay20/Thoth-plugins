@@ -1,0 +1,28 @@
+{
+  "One Dark Pro": {
+    "name": "One Dark Pro",
+    "dark_mode": true,
+    "bg": "#282c34",
+    "bg_panel": "#21252b",
+    "bg_sunken": "#1e2127",
+    "surface": "#2c313a",
+    "surface_raised": "#3e4451",
+    "surface_active": "#4b5263",
+    "fg": "#abb2bf",
+    "fg_muted": "#5c6370",
+    "syntax_key": "#e06c75",
+    "syntax_string": "#98c379",
+    "syntax_number": "#d19a66",
+    "syntax_bool": "#56b6c2",
+    "syntax_punctuation": "#abb2bf",
+    "success": "#98c379",
+    "warning": "#e5c07b",
+    "error": "#e06c75",
+    "info": "#56b6c2",
+    "accent": "#61afef",
+    "accent_secondary": "#c678dd",
+    "sidebar_hover": "#2c313a80",
+    "sidebar_header": "#abb2bf",
+    "indent_guide": "#3b4048"
+  }
+}
