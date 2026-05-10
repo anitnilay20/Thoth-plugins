@@ -40,6 +40,7 @@ jobs:
           zip -j one-dark-pro.zip \
             one-dark-pro/plugin.toml \
             one-dark-pro/theme.json \
+            one-dark-pro/icon.png \
             one-dark-pro/README.md
 
       - name: Compute SHA-256
