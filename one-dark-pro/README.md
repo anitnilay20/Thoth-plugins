@@ -38,7 +38,10 @@ One Dark Pro colour scheme for [Thoth](https://github.com/anitnilay20/thoth).
 Download `one-dark-pro.zip` from the [latest release](../../releases/latest), then extract and copy the folder to your Thoth plugins directory:
 
 ```bash
-# macOS / Linux
+# macOS
+unzip one-dark-pro.zip -d ~/Library/Application Support/thoth/one-dark-pro
+
+# Linux
 unzip one-dark-pro.zip -d ~/.config/thoth/plugins/one-dark-pro
 
 # Windows

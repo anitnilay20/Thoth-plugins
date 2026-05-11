@@ -100,7 +100,8 @@ jobs:
             ### Installation
             1. Download `one-dark-pro.zip` below.
             2. Extract and copy the folder to your plugins directory:
-               - **macOS / Linux:** `~/.config/thoth/plugins/`
+               - **macOS:** `~/Library/Application Support/thoth`
+               - **Linux:** `~/.config/thoth/plugins/`
                - **Windows:** `%APPDATA%\thoth\plugins\`
             3. Restart Thoth and enable the theme under **Settings → Appearance → Theme**.
           files: one-dark-pro.zip

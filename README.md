@@ -13,7 +13,10 @@ Community plugins and themes for [Thoth](https://github.com/anitnilay20/thoth).
 Copy the plugin directory to your Thoth plugins folder and restart Thoth:
 
 ```bash
-# macOS / Linux
+#macos
+cp -r <plugin-dir> ~/Library/Application Support/thoth
+
+# Linux
 cp -r <plugin-dir> ~/.config/thoth/plugins/
 
 # Windows
