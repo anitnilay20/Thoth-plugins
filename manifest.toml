@@ -9,3 +9,4 @@ sha256 = "efb362bce163babab83d96ea3d4b41ea6f3fafae5fef246599b27c3ae23f7670"
 icon_url = "https://raw.githubusercontent.com/anitnilay20/Thoth-plugins/one-dark-pro/one-dark-pro/icon.png"
 repo_url = "https://github.com/anitnilay20/Thoth-plugins/tree/one-dark-pro/one-dark-pro"
 readme = "https://raw.githubusercontent.com/anitnilay20/Thoth-plugins/one-dark-pro/one-dark-pro/README.md"
+categories = ["Theme"]
