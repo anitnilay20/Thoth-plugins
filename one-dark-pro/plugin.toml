@@ -1,0 +1,12 @@
+id = "com.thoth.one-dark-pro"
+name = "One Dark Pro"
+version = "1.0.2"
+description = "One Dark Pro colour scheme for Thoth"
+author = "Anit Nilay"
+capabilities = ["theme"]
+
+[theme]
+family = "One Dark Pro"
+catalog = [
+  ["One Dark Pro", true],
+]
