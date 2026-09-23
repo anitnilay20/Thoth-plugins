@@ -1,0 +1,139 @@
+name: Release · DuckDB readers
+
+# One workflow for all three readers: they differ only in their slug, so three
+# near-identical files would be three places to forget to change.
+#
+# Trigger with a tag naming the plugin and its version, e.g.
+#   git tag duckdb-excel-v1.0.0 && git push origin duckdb-excel-v1.0.0
+
+on:
+  push:
+    tags:
+      - "duckdb-*-v*"
+  workflow_dispatch:
+    inputs:
+      plugin:
+        description: "Which reader to release"
+        required: true
+        type: choice
+        options:
+          - duckdb-excel
+          - duckdb-sqlite
+          - duckdb-arrow
+      version:
+        description: "Version to release (e.g. 1.0.0)"
+        required: true
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Resolve plugin, version and tag
+        id: meta
+        run: |
+          set -euo pipefail
+          if [ "${{ github.event_name }}" = "push" ]; then
+            TAG="${GITHUB_REF_NAME}"
+            # duckdb-excel-v1.0.0 → slug=duckdb-excel, version=1.0.0
+            SLUG="${TAG%-v*}"
+            VERSION="${TAG##*-v}"
+          else
+            SLUG="${{ inputs.plugin }}"
+            VERSION="${{ inputs.version }}"
+            TAG="${SLUG}-v${VERSION}"
+          fi
+          test -f "${SLUG}/plugin.toml" || { echo "no such plugin: ${SLUG}"; exit 1; }
+          echo "slug=${SLUG}"       >> "$GITHUB_OUTPUT"
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "tag=${TAG}"         >> "$GITHUB_OUTPUT"
+          echo "name=$(grep -m1 '^name' "${SLUG}/plugin.toml" | cut -d'"' -f2)" >> "$GITHUB_OUTPUT"
+
+      - name: Package plugin
+        run: |
+          set -euo pipefail
+          SLUG="${{ steps.meta.outputs.slug }}"
+          # No binary: a reader plugin is metadata declaring which DuckDB
+          # extension to ask for. DuckDB hosts the builds and picks the right
+          # one for the platform and its own version.
+          zip -j "${SLUG}.zip" "${SLUG}/plugin.toml" "${SLUG}/README.md"
+
+      - name: Compute SHA-256
+        id: sha256
+        run: echo "hash=$(sha256sum ${{ steps.meta.outputs.slug }}.zip | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
+
+      - name: Update manifest.toml
+        run: |
+          DOWNLOAD_URL="https://github.com/${{ github.repository }}/releases/download/${{ steps.meta.outputs.tag }}/${{ steps.meta.outputs.slug }}.zip"
+          python3 - "com.thoth.${{ steps.meta.outputs.slug }}" "$DOWNLOAD_URL" "${{ steps.sha256.outputs.hash }}" "${{ steps.meta.outputs.version }}" <<'EOF'
+          import sys
+
+          plugin_id, download_url, sha256, version = sys.argv[1:5]
+          updates = {"download_url": download_url, "sha256": sha256, "version": version}
+
+          with open("manifest.toml") as f:
+              lines = f.readlines()
+
+          in_section = False
+          seen = set()
+          out = []
+          for line in lines:
+              stripped = line.strip()
+              if stripped.startswith("["):
+                  in_section = stripped == f'["{plugin_id}"]'
+              if in_section:
+                  for key, val in updates.items():
+                      if stripped.startswith(f"{key} ="):
+                          line = f'{key} = "{val}"\n'
+                          seen.add(key)
+                          break
+              out.append(line)
+
+          # The entry has to exist already: this rewrites keys, it does not
+          # invent a section. A release for a plugin nobody added to the
+          # manifest would otherwise succeed and change nothing.
+          missing = set(updates) - seen
+          if missing:
+              raise SystemExit(
+                  f"manifest.toml has no {sorted(missing)} under [\"{plugin_id}\"] — "
+                  "add the entry before releasing"
+              )
+
+          with open("manifest.toml", "w") as f:
+              f.writelines(out)
+          EOF
+
+      - name: Commit updated manifest
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add manifest.toml
+          git diff --cached --quiet || git commit -m "chore: update ${{ steps.meta.outputs.slug }} manifest for v${{ steps.meta.outputs.version }}"
+          git push origin HEAD:main
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.meta.outputs.tag }}
+          name: "${{ steps.meta.outputs.name }} v${{ steps.meta.outputs.version }}"
+          body: |
+            ## ${{ steps.meta.outputs.name }} v${{ steps.meta.outputs.version }}
+
+            A Thoth file reader. The plugin itself is metadata — installing it
+            tells Thoth to ask DuckDB for the matching extension, which DuckDB
+            downloads once and caches per platform and version.
+
+            **SHA-256:** `${{ steps.sha256.outputs.hash }}`
+
+            ### Installation
+
+            Install it from **Marketplace → File readers** inside Thoth, or
+            accept the offer shown above a file that needs it.
+          files: ${{ steps.meta.outputs.slug }}.zip

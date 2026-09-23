@@ -10,3 +10,42 @@ icon_url = "https://raw.githubusercontent.com/anitnilay20/Thoth-plugins/one-dark
 repo_url = "https://github.com/anitnilay20/Thoth-plugins/tree/one-dark-pro/one-dark-pro"
 readme = "https://raw.githubusercontent.com/anitnilay20/Thoth-plugins/one-dark-pro/one-dark-pro/README.md"
 categories = ["Theme"]
+
+["com.thoth.duckdb-excel"]
+id = "com.thoth.duckdb-excel"
+name = "Excel Reader"
+version = "1.0.0"
+author = "Thoth contributors"
+description = "Open Excel workbooks (.xlsx, .xlsm) as tables you can query."
+download_url = ""
+sha256 = ""
+icon_url = ""
+repo_url = "https://github.com/anitnilay20/Thoth-plugins/tree/main/duckdb-excel"
+readme = "https://raw.githubusercontent.com/anitnilay20/Thoth-plugins/main/duckdb-excel/README.md"
+categories = ["File reader"]
+
+["com.thoth.duckdb-sqlite"]
+id = "com.thoth.duckdb-sqlite"
+name = "SQLite Reader"
+version = "1.0.0"
+author = "Thoth contributors"
+description = "Open SQLite databases (.sqlite, .db) and browse their tables."
+download_url = ""
+sha256 = ""
+icon_url = ""
+repo_url = "https://github.com/anitnilay20/Thoth-plugins/tree/main/duckdb-sqlite"
+readme = "https://raw.githubusercontent.com/anitnilay20/Thoth-plugins/main/duckdb-sqlite/README.md"
+categories = ["File reader"]
+
+["com.thoth.duckdb-arrow"]
+id = "com.thoth.duckdb-arrow"
+name = "Arrow Reader"
+version = "1.0.0"
+author = "Thoth contributors"
+description = "Open Arrow IPC streams (.arrow, .arrows, .ipc)."
+download_url = ""
+sha256 = ""
+icon_url = ""
+repo_url = "https://github.com/anitnilay20/Thoth-plugins/tree/main/duckdb-arrow"
+readme = "https://raw.githubusercontent.com/anitnilay20/Thoth-plugins/main/duckdb-arrow/README.md"
+categories = ["File reader"]
