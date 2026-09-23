@@ -1,0 +1,21 @@
+id          = "com.thoth.duckdb-excel"
+name        = "Excel Reader"
+version     = "1.0.0"
+description = "Open Excel workbooks as tables you can query."
+author      = "Thoth contributors"
+homepage    = "https://github.com/anitnilay20/Thoth-plugins/tree/main/duckdb-excel"
+icon        = "\uEB6C"    # egui_phosphor::regular::MICROSOFT_EXCEL_LOGO
+
+capabilities = ["duckdb-extension"]
+
+# This plugin ships no binary of its own. DuckDB already hosts the `excel`
+# extension for every platform it supports, keyed by its own version, and picks
+# the right build itself — so the plugin declares the reader and the engine
+# fetches it. Carrying the `.duckdb_extension` files here would mean owning that
+# whole matrix by hand and re-uploading it on every DuckDB release.
+[duckdb-extension]
+extension            = "excel"
+repository           = "core"
+supported-extensions = ["xlsx", "xlsm"]
+unlocks              = "Excel workbooks (.xlsx, .xlsm)"
+download-size        = "7.5 MB"

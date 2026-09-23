@@ -1,0 +1,21 @@
+id          = "com.thoth.duckdb-sqlite"
+name        = "SQLite Reader"
+version     = "1.0.0"
+description = "Open SQLite databases and browse their tables."
+author      = "Thoth contributors"
+homepage    = "https://github.com/anitnilay20/Thoth-plugins/tree/main/duckdb-sqlite"
+icon        = "\uE1DE"    # egui_phosphor::regular::DATABASE
+
+capabilities = ["duckdb-extension"]
+
+# This plugin ships no binary of its own. DuckDB already hosts the `sqlite`
+# extension for every platform it supports, keyed by its own version, and picks
+# the right build itself — so the plugin declares the reader and the engine
+# fetches it. Carrying the `.duckdb_extension` files here would mean owning that
+# whole matrix by hand and re-uploading it on every DuckDB release.
+[duckdb-extension]
+extension            = "sqlite"
+repository           = "core"
+supported-extensions = ["sqlite", "sqlite3", "db"]
+unlocks              = "SQLite databases (.sqlite, .db)"
+download-size        = "26 MB"
