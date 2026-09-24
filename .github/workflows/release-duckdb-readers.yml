@@ -63,7 +63,7 @@ jobs:
           # No binary: a reader plugin is metadata declaring which DuckDB
           # extension to ask for. DuckDB hosts the builds and picks the right
           # one for the platform and its own version.
-          zip -j "${SLUG}.zip" "${SLUG}/plugin.toml" "${SLUG}/README.md"
+          zip -j "${SLUG}.zip" "${SLUG}/plugin.toml" "${SLUG}/README.md" "${SLUG}/icon.png"
 
       - name: Compute SHA-256
         id: sha256
