@@ -20,6 +20,7 @@ on:
           - duckdb-excel
           - duckdb-sqlite
           - duckdb-arrow
+          - duckdb-avro
       version:
         description: "Version to release (e.g. 1.0.0)"
         required: true
